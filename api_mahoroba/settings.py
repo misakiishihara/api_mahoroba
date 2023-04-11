@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-#Reactからのアクセスを許可する
+#Reactからのアクセスを許可
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000"
 ]
