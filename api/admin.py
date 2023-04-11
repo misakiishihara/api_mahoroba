@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext as _
 from . import models
 
+#AdminGUIのカスタマイズ
 class UserAdmin(BaseUserAdmin):
     ordering = ['id']
     list_display = ['email']
@@ -15,7 +16,7 @@ class UserAdmin(BaseUserAdmin):
                 'fields': (
                     'is_active',
                     'is_staff',
-                    'is_superuser'
+                    'is_superuser',
                 )
             }
         ),
@@ -28,6 +29,7 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
 
+admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Profile)
 admin.site.register(models.Post)
 admin.site.register(models.Comment)
