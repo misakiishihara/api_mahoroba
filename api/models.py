@@ -9,6 +9,11 @@ def upload_avatar_path(instance, filename):
     ext = filename.split('.')[-1]
     return '/'.join(['avatar', str(instance.userProfile.id)+str(instance.nickName)+str(".")+str(ext)])
 
+def upload_post_path(instance, filename):
+    #右端の拡張子(.jpeg等)を-1で切り出してext内に格納
+    ext = filename.split('.')[-1]
+    return '/'.join(['posts', str(instance.userPost.id)+str(instance.title )+str(".")+str(ext)])
+
 #
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
@@ -67,7 +72,17 @@ class Post(models.Model):
     )
     created_on = models.DateTimeField(auto_now_add=True)
     img = models.ImageField(blank=True, null=True, upload_to=upload_post_path)
-    linked = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='linked', blank=True)
+    #各ユーザーは複数の投稿にいいねできる
+    #各投稿は複数のユーザーを持つことができる => Many to Many
+    liked = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked', blank=True)
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    text = models.CharField(max_length=80)
+    userComment = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='userComment',
+        on_delete=models.CASCADE
+    )
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
